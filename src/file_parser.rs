@@ -45,6 +45,7 @@ mod tests {
         let dir = tempdir().unwrap();
         let file_path = dir.path().join("temp_file.txt");
         let mut file = File::create(file_path).unwrap();
+
         writeln!(file, "Hey there!").unwrap();
         writeln!(file, "Hey there 2!").unwrap();
 
