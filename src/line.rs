@@ -32,7 +32,7 @@ impl Line {
     pub fn line(&self) -> String {
         let string_capacity = self.words()
             .iter()
-            .fold(0, |mut acc, word| {
+            .fold(0, |acc, word| {
                 // the plus one is for the space we have between words
                 acc + word.len() + 1
             });

@@ -1,5 +1,5 @@
 [package]
-name = "rust-awk"
+name = "rust_awk"
 version = "0.1.0"
 edition = "2018"
 
@@ -7,3 +7,12 @@ edition = "2018"
 
 [dependencies]
 tempfile = "3"
+
+
+[lib]
+name = "rust_awk_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "rust_awk_bin"
+path = "src/bin.rs"

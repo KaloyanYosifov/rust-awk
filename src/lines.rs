@@ -2,6 +2,7 @@ use crate::line::Line;
 
 type LineList = Vec<Line>;
 
+#[derive(Debug)]
 pub struct Lines {
     lines: LineList,
 }
@@ -23,7 +24,7 @@ impl Lines {
         self
             .lines
             .iter()
-            .fold(0, |mut acc, line| acc + line.words_len())
+            .fold(0, |acc, line| acc + line.words_len())
     }
 
     pub fn line(&self, index: usize) -> Option<&Line> {

@@ -96,7 +96,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-awk"
+name = "rust_awk"
 version = "0.1.0"
 dependencies = [
  "tempfile",
