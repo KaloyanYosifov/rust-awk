@@ -19,19 +19,22 @@ impl Line {
         &self.words
     }
 
-    pub fn word(&self, index: usize) -> Option<&String> {
-        self.words.get(index)
+    pub fn words_len(&self) -> usize {
+        self.words.len()
+    }
+
+    pub fn word(&self, mut index: usize) -> Option<&String> {
+        index = if index == 0 { 1 } else { index };
+
+        self.words.get(index - 1)
     }
 
     pub fn line(&self) -> String {
         let string_capacity = self.words()
             .iter()
             .fold(0, |mut acc, word| {
-                acc += word.len();
-                // add one for the space between words
-                acc += 1;
-
-                acc
+                // the plus one is for the space we have between words
+                acc + word.len() + 1
             });
 
         self.words
@@ -77,9 +80,9 @@ mod tests {
         let line = String::from("Hey there stranger!");
         let parsed_line = Line::new(line.clone());
 
-        assert_eq!("Hey", parsed_line.word(0).unwrap());
-        assert_eq!("there", parsed_line.word(1).unwrap());
-        assert_eq!("stranger!", parsed_line.word(2).unwrap());
+        assert_eq!("Hey", parsed_line.word(1).unwrap());
+        assert_eq!("there", parsed_line.word(2).unwrap());
+        assert_eq!("stranger!", parsed_line.word(3).unwrap());
     }
 
     #[test]
@@ -87,8 +90,8 @@ mod tests {
         let line = String::from("Hey");
         let parsed_line = Line::new(line.clone());
 
-        assert_eq!("Hey", parsed_line.word(0).unwrap());
-        assert!(matches!(parsed_line.word(1), None));
+        assert_eq!("Hey", parsed_line.word(1).unwrap());
+        assert!(matches!(parsed_line.word(2), None));
     }
 
     #[test]
@@ -96,6 +99,6 @@ mod tests {
         let line = String::from("");
         let parsed_line = Line::new(line.clone());
 
-        assert_eq!("", parsed_line.word(0).unwrap());
+        assert_eq!("", parsed_line.word(1).unwrap());
     }
 }
