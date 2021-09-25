@@ -53,6 +53,7 @@ mod tests {
         let line_list = Lines::new(lines);
 
         assert_eq!(2, line_list.len());
+        assert_eq!(4, line_list.total_lines_len());
     }
 
     #[test]

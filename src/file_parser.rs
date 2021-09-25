@@ -42,6 +42,17 @@ mod tests {
     use crate::file_parser::FileParser;
 
     #[test]
+    fn it_returns_empty_lines_when_there_are_no_contents_in_the_file() {
+        let dir = tempdir().unwrap();
+        let file_path = dir.path().join("temp_file.txt");
+        let mut file = File::create(file_path).unwrap();
+        let lines = FileParser::parse(dir.path().join("temp_file.txt").as_path());
+
+        assert_eq!(0, lines.len());
+        assert_eq!(0, lines.total_lines_len());
+    }
+
+    #[test]
     fn it_parses_the_file() {
         let dir = tempdir().unwrap();
         let file_path = dir.path().join("temp_file.txt");
