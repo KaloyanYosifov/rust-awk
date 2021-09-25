@@ -2,7 +2,7 @@ use crate::line::Line;
 
 type LineList = Vec<Line>;
 
-struct Lines {
+pub struct Lines {
     lines: LineList,
 }
 
