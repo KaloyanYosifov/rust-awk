@@ -38,6 +38,10 @@ impl Lines {
             .map(|line| line.word(index).unwrap_or(&"".to_owned()).clone())
             .collect()
     }
+
+    pub fn lines(&self) -> &LineList {
+        &self.lines
+    }
 }
 
 #[cfg(test)]

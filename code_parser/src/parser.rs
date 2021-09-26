@@ -1,8 +1,10 @@
-enum Instruction {
+#[derive(Debug)]
+pub enum Instruction {
     NONE,
     PRINT(i32),
 }
 
+#[derive(Debug)]
 pub struct Parser {
     code: String,
     instructions: Vec<Instruction>,
@@ -19,7 +21,11 @@ impl Parser {
     }
 
     fn parse_code(code: &str) -> Vec<Instruction> {
-        code.split(';')
+        let parsed_code = code
+            .replace("{", "")
+            .replace("}", "");
+
+        parsed_code.split(';')
             .into_iter()
             .map(|mut line| {
                 line = line.trim();
@@ -40,7 +46,14 @@ impl Parser {
 
                 instruction
             })
+            .filter(|instruction| !matches!(instruction, Instruction::NONE))
             .collect()
+    }
+}
+
+impl Parser {
+    pub fn instructions(&self) -> &Vec<Instruction> {
+        &self.instructions
     }
 }
 
@@ -56,6 +69,14 @@ mod tests {
         assert!(matches!(parser.instructions[0], Instruction::PRINT(3)));
         assert!(matches!(parser.instructions[1], Instruction::PRINT(5)));
 
-        assert!(matches!(parser.instructions.get(2).unwrap(), Instruction::NONE));
+        assert!(matches!(parser.instructions.get(2), None));
+    }
+
+    #[test]
+    fn it_has_no_instructions_if_they_are_not_recognized() {
+        let parser = Parser::parse("hallo $3; print $5;".to_owned());
+
+        assert!(matches!(parser.instructions[0], Instruction::PRINT(5)));
+        assert!(matches!(parser.instructions.get(1), None));
     }
 }
