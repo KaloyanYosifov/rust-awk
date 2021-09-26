@@ -27,7 +27,15 @@ impl Parser {
                 let mut instruction = Instruction::NONE;
 
                 if line.starts_with("print") {
-                    instruction = Instruction::PRINT(3)
+                    line = &line[5..].trim();
+
+                    if !line.starts_with('$') {
+                        panic!("Unknown code!");
+                    }
+
+                    line = &line[1..].trim();
+
+                    instruction = Instruction::PRINT(line.parse::<i32>().unwrap())
                 }
 
                 instruction
@@ -46,6 +54,8 @@ mod tests {
         let parser = Parser::parse("print $3; print $5;".to_owned());
 
         assert!(matches!(parser.instructions[0], Instruction::PRINT(3)));
-        assert!(matches!(parser.instructions[1], Instruction::PRINT(3)));
+        assert!(matches!(parser.instructions[1], Instruction::PRINT(5)));
+
+        assert!(matches!(parser.instructions.get(2).unwrap(), Instruction::NONE));
     }
 }
