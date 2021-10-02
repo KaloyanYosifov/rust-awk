@@ -23,15 +23,17 @@ impl Parser {
 
     fn parse_code(code: &str) -> Vec<Instruction> {
         let mut instructions: Vec<Instruction> = vec![];
-
-        let mut parsed_code = code
-            .replace("{", "")
-            .replace("}", "");
+        // get the removed code and put it as a &str in parsed code as rust
+        // doesn't allow doint .as_str() inline, as for some reason it shows that the call will go out of scope
+        // makes no sense to me since we are calling it inside the function which has the whole scope
+        // but ok.
+        let removed_code = Self::remove_unused_characters_in_code(code);
+        let mut parsed_code = removed_code.as_str();
 
         if parsed_code.starts_with('/') {
             let other_slash_index = parsed_code.rfind('/').unwrap();
             let regex = (&parsed_code[1..other_slash_index]).to_owned();
-            parsed_code = (&parsed_code[other_slash_index + 1..]).to_owned();
+            parsed_code = &parsed_code[other_slash_index + 1..];
 
             instructions.push(Instruction::REGEX(regex));
         }
@@ -63,6 +65,13 @@ impl Parser {
         );
 
         instructions
+    }
+
+    fn remove_unused_characters_in_code(code: &str) -> String {
+        let re = regex::Regex::new(r"\{|\}").unwrap();
+        let removed = re.replace_all(code, "").to_string();
+
+        removed
     }
 }
 
